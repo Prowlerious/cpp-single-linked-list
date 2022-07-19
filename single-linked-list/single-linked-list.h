@@ -85,11 +85,13 @@ class SingleLinkedList
 
         [[nodiscard]] reference operator*() const noexcept
         {
+            assert(node_ != nullptr);
             return node_->value;
         }
 
         [[nodiscard]] pointer operator->() const noexcept
         {
+            assert(node_ != nullptr);
             return &node_->value;
         }
 
@@ -110,10 +112,6 @@ public:
 
     [[nodiscard]] Iterator begin() noexcept
     {
-        if (IsEmpty())
-        {
-            return end();
-        }
         return Iterator(head_.next_node);
     }
 
@@ -204,13 +202,11 @@ public:
 
     void PopFront() noexcept
     {
-        if (!IsEmpty())
-        {
-            Node* tmp = head_.next_node;
-            head_.next_node = tmp->next_node;
-            --size_;
-            delete tmp;
-        }
+        assert(!IsEmpty());
+        Node* tmp = head_.next_node;
+        head_.next_node = tmp->next_node;
+        --size_;
+        delete tmp;
     }
 
     Iterator InsertAfter(ConstIterator pos, const Type& value)
